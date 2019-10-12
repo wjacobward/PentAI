@@ -5,8 +5,14 @@ class PenteBoard:
     stone_color = enum.Enum('stone', 'black white')
 
     def __init__(self):
+
         self.black_stones = [[0 for x in range(19)] for x in range(19)]
         self.white_stones = [[0 for x in range(19)] for x in range(19)]
+
+    def place_stone(self, color, location):
+        self.add_stone(color, location)
+        self.check_for_capture(color, location)
+        self.check_for_win(color)
 
     def add_stone(self, color, location):
         selector = {self.stone_color.black: self.add_black_stone,
@@ -42,6 +48,20 @@ class PenteBoard:
         if not self.white_stones[location[0]][location[1]] == 1:
             raise SpaceEmptyError("Attempted to remove a white stone that wasn't there")
         self.white_stones[location[0]][location[1]] = 0
+
+    def check_for_capture(self, color, location):
+        # look for two opposing stones sandwiched by two stones of <color>, one being the newly placed stone
+        pass
+
+    def check_for_win(self, color):
+        # look for lines of 5 or more stones of the same color
+        selector = {self.stone_color.black: self.black_stones,
+                    self.stone_color.white: self.white_stones}
+        stones_to_check = selector[color]
+        # check for horizontal win
+        # check for vertical win
+        # check for diagonal win (SW/NE)
+        # check for diagonal win (NW/SE)
 
 
 class SpaceOccupiedError(Exception):
